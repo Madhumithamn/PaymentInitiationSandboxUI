@@ -1,0 +1,40 @@
+<div class="container-fluid">
+    <h2>Payment Initiation Form</h2>
+    
+    <div *ngIf ="paymentIntiationResponse.responseStatusMessage == 'UNKNOWN_CERTIFICATE' || paymentIntiationResponse.responseStatusMessage == 'INVALID_SIGNATURE' || paymentIntiationResponse.responseStatusMessage == 'INVALID_REQUEST' || paymentIntiationResponse.responseStatusMessage == 'LIMIT_EXCEEDED' || paymentIntiationResponse.responseStatusMessage == 'GENERAL_ERROR'"  class="alert alert-danger" role="alert">
+      {{paymentIntiationResponse.responseStatusMessage}}
+    </div>
+    <div *ngIf ="paymentIntiationResponse.responseStatusMessage == 'VALIDATIONPASS'" class="alert alert-success" role="alert">
+      {{paymentIntiationResponse.responseStatusMessage}}
+    </div>
+    
+    <form #paymentInitiationForm="ngForm" *ngIf="!submitted" (ngSubmit)="onSubmit()" novalidate>
+      
+      <div class="form-group">
+        <label>DebtorIBAN</label>
+        <input type="text" #debtorIBAN="ngModel" required class="form-control" [class.is-invalid]="debtorIBAN.invalid && debtorIBAN.touched" name="debtorIBAN" [(ngModel)]="paymentInitiationRequest.debtorIBAN">
+        <small class="text-danger" [class.d-none]="debtorIBAN.valid || debtorIBAN.untouched">DebtorIBAN is required</small>
+      </div>
+  
+      <div class="form-group">
+        <label>CreditorIBAN</label>
+        <input type="text" #creditorIBAN="ngModel" required class="form-control" [class.is-invalid]="creditorIBAN.invalid && creditorIBAN.touched" name="creditorIBAN" [(ngModel)]="paymentInitiationRequest.creditorIBAN">
+        <small class="text-danger" [class.d-none]="creditorIBAN.valid || creditorIBAN.untouched">CreditorIBAN is required</small>
+      
+      </div>
+  
+      <div class="form-group">
+        <label>Amount</label>
+        <input type="text" #amount="ngModel" required class="form-control" [class.is-invalid]="amount.invalid && amount.touched" name="amount" [(ngModel)]="paymentInitiationRequest.amount">
+        <small class="text-danger" [class.d-none]="amount.valid || amount.untouched">Amount is required</small>
+      
+     </div>
+  
+      
+      <button class="btn btn-primary" [disabled]="paymentInitiationForm.form.invalid " type="submit">Submit</button>
+  
+    </form>
+    <div class="alert alert-danger" *ngIf="errorMsg">
+      {{errorMsg}}
+    </div>
+  </div>
